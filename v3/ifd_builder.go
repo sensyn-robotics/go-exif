@@ -12,10 +12,7 @@ import (
 
 	"encoding/binary"
 
-	"github.com/dsoprea/go-logging"
-
-	"github.com/dsoprea/go-exif/v3/common"
-	"github.com/dsoprea/go-exif/v3/undefined"
+	log "github.com/dsoprea/go-logging"
 )
 
 var (
@@ -1077,16 +1074,16 @@ func (ib *IfdBuilder) AddTagsFromExisting(ifd *Ifd, includeTagIds []uint16, excl
 			// Non-IFD tag.
 
 			rawBytes, err := ite.GetRawBytes()
-			log.PanicIf(err)
+			if err != nil {
+				value := NewIfdBuilderTagValueFromBytes(rawBytes)
 
-			value := NewIfdBuilderTagValueFromBytes(rawBytes)
-
-			bt = NewBuilderTag(
-				ifd.ifdIdentity.UnindexedString(),
-				ite.TagId(),
-				ite.TagType(),
-				value,
-				ib.byteOrder)
+				bt = NewBuilderTag(
+					ifd.ifdIdentity.UnindexedString(),
+					ite.TagId(),
+					ite.TagType(),
+					value,
+					ib.byteOrder)
+			}
 		}
 
 		err := ib.add(bt)
