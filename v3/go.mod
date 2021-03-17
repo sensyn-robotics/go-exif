@@ -1,4 +1,4 @@
-module github.com/sensyn-robotics/go-exif/v2
+module github.com/sensyn-robotics/go-exif/v3
 
 go 1.13
 
